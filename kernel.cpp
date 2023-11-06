@@ -7,7 +7,7 @@ void printf(char* str){
 }
 
 extern "C" void kmain(void* multiboot_structure, unsigned int magicnumber){
-  printf("Hello World!");
+  printf("Hello World!\n");
 
   while(1);
 }

@@ -11,5 +11,13 @@ objects = loader.o kernel.o
 mykernel.bin: linker.ld $(objects)
 		ld $(LDPARAMS) -T $< -o $@ $(objects)
 
-install: mykernel.bin
-		sudo cp $< /boot/mykernel.bin
+iso: mykernel.bin
+	mkdir -p isodir/boot/grub
+	cat iso.txt > isodir/boot/grub/grub.cfg
+	cp mykernel.bin isodir/boot/kernel.bin
+	grub-mkrescue -o myos.iso isodir
+clean:
+	rm -rf isodir
+	rm loader.o kernel.o mykernel.bin
+all: iso
+	qemu-system-i386 -cdrom myos.iso -nographic
